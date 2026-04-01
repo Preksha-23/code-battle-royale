@@ -44,6 +44,13 @@ function App() {
               </div>
             </>
           )}
+
+          {status === 'connecting' && (
+            <>
+              <h2 className="panel-title gradient-text glow-pulse-fast">Connecting...</h2>
+              <p className="panel-desc">Establishing secure uplink to the Arena server.</p>
+            </>
+          )}
           
            {status === 'error' && (
             <>

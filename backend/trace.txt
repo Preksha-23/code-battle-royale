@@ -1,0 +1,8 @@
+Popping p2...
+Popping p2...
+Popped p2: tester-2
+Popped p2: None
+-1
+Popped p1: None
+Popped p1: None
+Popped p1: None

@@ -1,0 +1,195 @@
+/* Arena Specific Styles */
+.arena-container {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    width: 90vw;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+}
+
+.arena-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    padding-bottom: 20px;
+}
+
+.arena-header h2 {
+    font-size: 2.5rem;
+    margin: 0;
+    letter-spacing: 5px;
+}
+
+.arena-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: monospace;
+    font-weight: 700;
+}
+
+.status-indicator {
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--accent-pink);
+    box-shadow: 0 0 10px var(--accent-pink);
+}
+
+.status-indicator.online {
+    background-color: var(--accent-cyan);
+    box-shadow: 0 0 10px var(--accent-cyan);
+}
+
+.arena-split {
+    display: flex;
+    flex: 1;
+    gap: 30px;
+    justify-content: center;
+}
+
+.editor-pane {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.my-editor {
+    border-bottom: 2px solid var(--accent-cyan);
+}
+
+.opponent-editor {
+    border-bottom: 2px solid var(--accent-pink);
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10, 10, 18, 0.9);
+    padding: 10px 15px;
+    font-family: monospace;
+}
+
+.editor-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--accent-cyan);
+    letter-spacing: 2px;
+}
+
+.player-id {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+}
+
+.live-badge {
+    background: rgba(255, 0, 153, 0.2);
+    color: var(--accent-pink);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    animation: flash 2s infinite;
+}
+
+@keyframes flash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Base CodeMirror wrappers */
+.codemirror-wrapper {
+    flex: 1;
+    font-size: 1.1rem;
+    font-family: 'Fira Code', 'Courier New', Courier, monospace;
+}
+
+.codemirror-wrapper .cm-editor {
+    height: 100%;
+}
+
+.code-glow .cm-scroller {
+    box-shadow: inset 0 0 50px rgba(0, 255, 255, 0.05);
+}
+
+.opponent-glow .cm-scroller {
+    box-shadow: inset 0 0 50px rgba(255, 0, 153, 0.05);
+}
+
+.opponent-overlay {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0.5;
+}
+
+.arena-footer {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.submit-btn {
+    width: 300px;
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+}
+
+/* Game Over Overlay */
+.game-over-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.game-over-modal {
+    padding: 50px;
+    text-align: center;
+    border: 2px solid #fff;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+}
+
+.victory-text {
+    font-size: 5rem;
+    color: var(--accent-cyan);
+    margin: 0 0 20px 0;
+    text-shadow: 0 0 30px var(--accent-cyan);
+    letter-spacing: 15px;
+}
+
+.defeat-text {
+    font-size: 5rem;
+    color: #ff4444;
+    margin: 0 0 20px 0;
+    text-shadow: 0 0 30px #ff4444;
+    letter-spacing: 15px;
+}

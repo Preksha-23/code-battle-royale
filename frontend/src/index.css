@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+:root {
+  --bg-color: #0b0c10;
+  --panel-bg: rgba(20, 22, 33, 0.8);
+  --text-primary: #e0e0ff;
+  --text-secondary: #8c8cba;
+  --accent-cyan: #00f3ff;
+  --accent-pink: #ff00ea;
+  --accent-purple: #b537f2;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  background-image: 
+    linear-gradient(rgba(11, 12, 16, 0.9), rgba(11, 12, 16, 0.9)),
+    url('data:image/svg+xml;utf8,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h40v40H0z" fill="none"/><path d="M0 39h40M39 0v40" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></svg>');
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Cyberpunk Headings */
+h1, h2, h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.3), 0 0 20px rgba(255, 0, 234, 0.3);
+}
+
+/* Neo-glassmorphism panels */
+.glass-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Interactive elements */
+button {
+  background: linear-gradient(45deg, var(--accent-purple), var(--accent-pink));
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(255, 0, 234, 0.4);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(255, 0, 234, 0.8);
+  filter: brightness(1.2);
+}

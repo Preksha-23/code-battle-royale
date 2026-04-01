@@ -30,9 +30,14 @@ background_tasks = set()
 
 @app.on_event("startup")
 async def startup_event():
-    # Attempt to create tables on startup (in a real app you might use Alembic)
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    # Attempt to create tables on startup
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        print("Successfully connected to Database and ensured tables exist.")
+    except Exception as e:
+        print(f"CRITICAL WARNING: Failed to connect to Database on startup: {e}")
+        print("The server is running, but database features will fail until DATABASE_URL is correct.")
         
     # Start matchmaking worker loop
     task = asyncio.create_task(pair_players_worker())

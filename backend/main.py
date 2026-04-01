@@ -179,17 +179,22 @@ async def start_practice(req: PracticeRequest, redis_client: redis.Redis = Depen
     """
     Creates a single-player room for practicing algorithmic puzzles.
     """
-    room_uuid = str(uuid.uuid4())
-    puzzle = get_random_puzzle()
+    try:
+        room_uuid = str(uuid.uuid4())
+        puzzle = get_random_puzzle()
+        
+        room_data = {
+            "room_id": room_uuid,
+            "players": [req.client_id],
+            "status": "active",
+            "puzzle": puzzle
+        }
+        
+        # Store directly in our active rooms
+        await redis_client.hset("cbr:rooms", room_uuid, json.dumps(room_data))
+        return {"status": "success", "room_data": room_data}
     
-    room_data = {
-        "room_id": room_uuid,
-        "players": [req.client_id],
-        "status": "active",
-        "puzzle": puzzle
-    }
-    
-    # Store directly in our active rooms
-    await redis_client.hset("cbr:rooms", room_uuid, json.dumps(room_data))
-    
-    return {"status": "success", "room_data": room_data}
+    except Exception as e:
+        print(f"FATAL REDIS ERROR: {e}")
+        # Returning a 200 with an error object ensures CORS headers aren't destroyed!
+        return {"status": "error", "message": "Failed to connect to active database infrastructure."}

@@ -18,8 +18,7 @@ async def pair_players_worker():
     Infinite background task that scans the Redis queue.
     If 2 players are found, pops them, creates a room, and broadcasts via sockets.
     """
-    import redis.asyncio as redis_async
-    local_redis = redis_async.from_url("redis://localhost:6379/0", decode_responses=True)
+    local_redis = await get_redis()
     print("Matchmaking worker started...", flush=True)
     
     while True:

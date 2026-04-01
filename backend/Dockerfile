@@ -10,11 +10,11 @@ ENV PYTHONUNBUFFERED=1
 RUN apt-get update && apt-get install -y gcc && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install
-COPY requirements.txt .
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the actual app
-COPY . .
+COPY backend/ .
 
 # Expose the default port (Railway automatically overrides this at runtime via $PORT)
 EXPOSE 8000

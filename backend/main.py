@@ -16,8 +16,11 @@ app = FastAPI(title="Code Battle Royale API", version="1.0.0")
 # Configure CORS for our frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict this to the Vite frontend URL
-    allow_credentials=True,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://code-battle-royale.vercel.app"
+    ], 
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

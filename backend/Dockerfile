@@ -16,5 +16,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the actual app
 COPY backend/ .
 
-# Start server using the environment port for Railway compatibility
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# Expose default port
+EXPOSE 8000
+
+# Railway natively replaces $PORT in shell form
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}

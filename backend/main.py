@@ -16,10 +16,7 @@ app = FastAPI(title="Code Battle Royale API", version="1.0.0")
 # Configure CORS for our frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "https://code-battle-royale.vercel.app"
-    ], 
+    allow_origins=["*"], 
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -99,7 +96,14 @@ async def websocket_matchmaking(websocket: WebSocket, client_id: str):
                 
     except WebSocketDisconnect:
         manager.disconnect(client_id)
-        await leave_queue(client_id)
+        try:
+            await leave_queue(client_id)
+        except Exception:
+            pass
+    except Exception as e:
+        print(f"Fatal Websocket error: {e}")
+        manager.disconnect(client_id)
+
 
 @app.websocket("/ws/arena/{room_id}/{client_id}")
 async def websocket_arena(websocket: WebSocket, room_id: str, client_id: str):
@@ -162,10 +166,17 @@ async def websocket_arena(websocket: WebSocket, room_id: str, client_id: str):
         manager.leave_room(room_id, client_id)
         manager.disconnect(client_id)
         # Notify opponent of disconnection
-        await manager.broadcast_to_room(
-            room_id,
-            {"event": "player_left", "data": {"client_id": client_id}}
-        )
+        try:
+            await manager.broadcast_to_room(
+                room_id,
+                {"event": "player_left", "data": {"client_id": client_id}}
+            )
+        except Exception:
+            pass
+    except Exception as e:
+        print(f"Fatal Arena Error: {e}")
+        manager.leave_room(room_id, client_id)
+        manager.disconnect(client_id)
 
 from pydantic import BaseModel
 import uuid

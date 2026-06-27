@@ -62,8 +62,8 @@ Code Battle Royale is a **real-time multiplayer coding arena** where two players
 |---|---|
 | **Docker Compose** | Local dev environment (DB + Redis) |
 | **Render** | Backend deployment (via Dockerfile) |
-| **Supabase** | Managed PostgreSQL (production) |
-| **Upstash** | Managed Redis (production) |
+| **Neon** | Managed PostgreSQL (production, free forever) |
+| **Upstash** | Managed serverless Redis (production) |
 | **Vercel** | Frontend deployment |
 
 ---
@@ -184,19 +184,26 @@ The app will be available at **http://localhost:5173**
 
 ## 🌐 Deployment
 
-This project uses a fully free deployment stack:
+This project uses a **100% free, no-expiry** deployment stack:
 
 | Service | Purpose | Link |
 |---|---|---|
-| **Supabase** | Managed PostgreSQL database | [supabase.com](https://supabase.com) |
+| **Neon** | Managed PostgreSQL (free forever) | [neon.tech](https://neon.tech) |
 | **Upstash** | Managed serverless Redis | [upstash.com](https://upstash.com) |
 | **Render** | Backend (FastAPI) hosting | [render.com](https://render.com) |
 | **Vercel** | Frontend (React) hosting | [vercel.com](https://vercel.com) |
 
-### Step 1 — Supabase (PostgreSQL)
-1. Create a free project at [supabase.com](https://supabase.com)
-2. Go to **Project Settings → Database → Connection String → URI**
-3. Copy the connection string — this is your `DATABASE_URL`
+### Step 1 — Neon (PostgreSQL)
+1. Create a free account at [neon.tech](https://neon.tech) — sign up with GitHub
+2. Click **"New Project"** → choose **US East** region (best latency with Render)
+3. After creation, go to **"Connection Details"**
+4. Copy the connection string — it looks like:
+   ```
+   postgresql://username:password@ep-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require
+   ```
+5. This is your `DATABASE_URL`
+
+> ✅ Neon is free forever with no expiry — no credit card required
 
 ### Step 2 — Upstash (Redis)
 1. Create a free database at [upstash.com](https://upstash.com)
@@ -215,8 +222,8 @@ This project uses a fully free deployment stack:
 
 | Variable | Description |
 |---|---|
-| `DATABASE_URL` | Connection string from Supabase |
-| `REDIS_URL` | Redis URL from Upstash |
+| `DATABASE_URL` | Connection string from Neon |
+| `REDIS_URL` | Redis URL from Upstash (TCP tab) |
 
 ### Step 4 — Vercel (Frontend)
 1. Deploy frontend at [vercel.com](https://vercel.com)

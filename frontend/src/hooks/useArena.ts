@@ -6,6 +6,7 @@ export interface ArenaState {
     gameStatus: 'active' | 'finished';
     winner?: string;
     lastErrorMsg?: string;
+    failedTest?: string;
 }
 
 export function useArena(roomId: string, clientId: string) {
@@ -34,13 +35,26 @@ export function useArena(roomId: string, clientId: string) {
             try {
                 const payload = JSON.parse(event.data);
                 if (payload.event === 'editor_update') {
-                    setState(s => ({ ...s, opponentCode: payload.data.code, lastErrorMsg: undefined }));
+                    setState(s => ({ ...s, opponentCode: payload.data.code, lastErrorMsg: undefined, failedTest: undefined }));
                 } else if (payload.event === 'player_left') {
                     setState(s => ({ ...s, opponentCode: '# Opponent disconnected!' }));
                 } else if (payload.event === 'test_failed') {
-                    setState(s => ({ ...s, lastErrorMsg: payload.data.error_msg }));
+                    setState(s => ({ ...s, lastErrorMsg: payload.data.error_msg, failedTest: payload.data.failed_test }));
+                } else if (payload.event === 'room_not_found') {
+                    setState(s => ({ ...s, status: 'error', lastErrorMsg: payload.data.message }));
                 } else if (payload.event === 'game_over') {
                     setState(s => ({ ...s, gameStatus: 'finished', winner: payload.data.winner }));
+                } else if (payload.event === 'friend_request') {
+                    // When a friend request is received, store it only for the target user.
+                    // The sender will handle its own UI state via a separate flag.
+                    const senderName = payload.data?.sender_name || 'OPPONENT';
+                    let existingStr = localStorage.getItem('cbr_friends');
+                    let existing = existingStr ? JSON.parse(existingStr) : [];
+                    if (!existing.some((f: any) => f.name === senderName)) {
+                        existing.push({ name: senderName, status: 'REQUEST RECEIVED // INCOMING', online: true, pending: true });
+                        localStorage.setItem('cbr_friends', JSON.stringify(existing));
+                        sessionStorage.setItem('cbr_friends', JSON.stringify(existing));
+                    }
                 }
             } catch (err) {
                 console.error("Failed to parse arena message:", err);
@@ -82,9 +96,19 @@ export function useArena(roomId: string, clientId: string) {
         }
     }, []);
 
+    const sendFriendRequest = useCallback((senderName: string) => {
+        if (socketRef.current?.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify({
+                event: 'friend_request',
+                data: { sender_id: clientId, sender_name: senderName }
+            }));
+        }
+    }, [clientId]);
+
     return {
         ...state,
         sendCodeUpdate,
-        submitSolution
+        submitSolution,
+        sendFriendRequest
     };
 }

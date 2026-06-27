@@ -19,5 +19,5 @@ COPY backend/ .
 # Expose default port
 EXPOSE 8000
 
-# Railway natively replaces $PORT in shell form
+# PORT env var is set automatically by Render/Railway
 CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}

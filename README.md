@@ -61,7 +61,9 @@ Code Battle Royale is a **real-time multiplayer coding arena** where two players
 | Technology | Purpose |
 |---|---|
 | **Docker Compose** | Local dev environment (DB + Redis) |
-| **Railway** | Backend deployment (via Dockerfile) |
+| **Render** | Backend deployment (via Dockerfile) |
+| **Supabase** | Managed PostgreSQL (production) |
+| **Upstash** | Managed Redis (production) |
 | **Vercel** | Frontend deployment |
 
 ---
@@ -182,22 +184,50 @@ The app will be available at **http://localhost:5173**
 
 ## 🌐 Deployment
 
-### Backend → Railway
-The backend is deployed on [Railway](https://railway.app/) using the `Dockerfile` in `backend/`. Set the following environment variables in your Railway service:
+This project uses a fully free deployment stack:
+
+| Service | Purpose | Link |
+|---|---|---|
+| **Supabase** | Managed PostgreSQL database | [supabase.com](https://supabase.com) |
+| **Upstash** | Managed serverless Redis | [upstash.com](https://upstash.com) |
+| **Render** | Backend (FastAPI) hosting | [render.com](https://render.com) |
+| **Vercel** | Frontend (React) hosting | [vercel.com](https://vercel.com) |
+
+### Step 1 — Supabase (PostgreSQL)
+1. Create a free project at [supabase.com](https://supabase.com)
+2. Go to **Project Settings → Database → Connection String → URI**
+3. Copy the connection string — this is your `DATABASE_URL`
+
+### Step 2 — Upstash (Redis)
+1. Create a free database at [upstash.com](https://upstash.com)
+2. Open your database → **Connect → TCP** tab
+3. Copy the `REDIS_URL` value (starts with `rediss://`)
+
+### Step 3 — Render (Backend)
+1. Create an account at [render.com](https://render.com) → **New Web Service**
+2. Connect your GitHub repo: `Preksha-23/code-battle-royale`
+3. Set build config:
+   - **Runtime:** Docker
+   - **Dockerfile Path:** `./backend/Dockerfile`
+   - **Docker Context:** `.` (repo root)
+   - **Plan:** Free
+4. Add environment variables:
 
 | Variable | Description |
 |---|---|
-| `DATABASE_URL` | PostgreSQL connection string |
-| `REDIS_URL` | Redis connection string |
-| `PORT` | Port (Railway sets this automatically) |
+| `DATABASE_URL` | Connection string from Supabase |
+| `REDIS_URL` | Redis URL from Upstash |
 
-### Frontend → Vercel
-The frontend is deployed on [Vercel](https://vercel.com/). Set these environment variables in Vercel:
+### Step 4 — Vercel (Frontend)
+1. Deploy frontend at [vercel.com](https://vercel.com)
+2. Set environment variables:
 
 | Variable | Description |
 |---|---|
-| `VITE_API_URL` | Your Railway backend URL |
-| `VITE_WS_URL` | Your Railway backend WebSocket URL |
+| `VITE_API_URL` | Your Render backend URL (e.g. `https://your-app.onrender.com`) |
+| `VITE_WS_URL` | Your Render WebSocket URL (e.g. `wss://your-app.onrender.com`) |
+
+> ⚠️ **Note:** On Render's free plan, the backend sleeps after 15 minutes of inactivity and takes ~30 seconds to wake up on the first request.
 
 ---
 
